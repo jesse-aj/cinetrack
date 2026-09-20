@@ -83,3 +83,19 @@
   font-weight:bold;
   color: #f1c40f;
 }
+
+
+.fav-btn {
+  margin-top: 5px;
+  background: #eee;
+  border: none;
+  padding: 5px 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+.fav-btn.active {
+  background: #ffdee2;
+  color: #e74c3c;
+  font-weight: bold;
+}

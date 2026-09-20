@@ -26,7 +26,7 @@
 .search-form button {
   padding: 8px 15px;
   font-size: 14px;
-  background-color: #007BFF;
+  background-color: #181b1f;
   color: white;
   border: 1px solid #007BFF;
   cursor: pointer;
@@ -34,4 +34,52 @@
 
 .search-form button:hover {
   background-color: #0056b3;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 16px;
+    padding: 20px;
+}
+
+
+.card {
+    background-color: rgb(204, 192, 132);
+    border: 1px solid;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+
+.card-poster {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding:16px;
+  font-family: sans-serif;
+}
+
+.card-title {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.card-meta {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+
+
+.card-rating {
+  font-weight:bold;
+  color: #f1c40f;
 }

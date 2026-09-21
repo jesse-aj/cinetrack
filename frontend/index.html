@@ -9,22 +9,36 @@
 <body>
     <header class="site-header">
         <div class ="logo">CineTrack</div>
-        
         <form class = "search-form" action="/search" method="GET">
             <input type="search" name="g" placeholder="Search for movies" aria-label="Seach">
             <button type = "submit"> Search </button> 
         </form>
         <nav class = "nav-links">
-            <a href="#">My Library</a>
+            <a href="library.html">My Library</a>
             <a href="#">About</a>
         </nav>
     </header>
-</body>
-    <div id="movie-grid" class="grid-container"> 
-    </div>
+
+<!--the hidden overlay container that covers the screen -->
+<div id="movie-modal" class="modal-overlay">
+    
+<!-- The actual popup content box -->
+<div class="modal-content">
+        
+<!--A close button so the user can exit from the modal page-->
+<button id="close-modal-btn" class="close-btn">&times; Close</button>
+       
+<div id="modal-movie-details"></div>
+<!--Javascript insert modal details here --> 
+</div>
+</div>
+
+<div id="movie-grid" class="grid-container"> 
+<!--JavaScript is inserted here (The cards)-->
+</div>
 
 
 
 <script src="app.js"></script>
-
+</body>
 </html>

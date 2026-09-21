@@ -38,7 +38,7 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 16px;
     padding: 20px;
 }
@@ -47,6 +47,7 @@
 .card {
     background-color: rgb(204, 192, 132);
     border: 1px solid;
+    border-radius: 25px ;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -84,18 +85,99 @@
   color: #f1c40f;
 }
 
+.buttons{
+  display: flex;
+  gap: 12px; 
+}
+
+.buttons button {
+  flex: 1 1 45%;
+  min-height: 34px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
 
 .fav-btn {
   margin-top: 5px;
   background: #eee;
-  border: none;
+  border-radius: 8px;
   padding: 5px 5px;
   cursor: pointer;
-  width: 100%;
+  width: auto;
   transition: background 0.2s;
+  flex: 1 1 45%;
 }
 .fav-btn.active {
   background: #ffdee2;
   color: #e74c3c;
   font-weight: bold;
 }
+
+
+.add-lib.selected {
+  background: #b8e6c1;
+  color: #176b2c;
+}
+
+.mark-watched.selected {
+  background: #8ed1fc;
+  color: #064b73;
+}
+
+.edit-btn.selected {
+  background: #ffe08a;
+}
+
+.card.removed {
+  display: none;
+}
+
+
+/* 1. The Overlay layer (Covers the full viewport screen area) */
+.modal-overlay {  
+  display: none;
+  position: fixed;       /* Locks the overlay to the viewport, ignoring scroll */  
+  top: 0;
+  left: 0;
+  width: 100vw;          /* Takes up 100% viewport width */
+  height: 100vh;         /* Takes up 100% viewport height */
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black backdrop shading */
+  justify-content: center; /* Horizontally aligns content box to center */
+  align-items: center;   /* Vertically aligns content box to center */
+  z-index: 1000;         /* Ensures it hovers directly over your regular grid */
+}
+
+/* The Core Interactive Toggle Class (very important) */
+.modal-overlay.open {
+  display: flex !important; /* Completely vanishes the container and breaks structural interference */
+}
+
+/* The actual Modal foreground content container popup block box */
+.modal-content {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  color: #333333;         /* Dark placeholder font coloring */
+}
+
+/* Simple close button floating position adjustment style rules */
+.close-btn {
+  cursor: pointer;
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  float: right;
+}
+
+/*buttons */
+
+
+

@@ -39,10 +39,25 @@ app.post("/api/movies", async(req, res) => {
         return res.status(400).json({
             message: "Genre must be an array"
         });
+    }
 
+    const newMovie = {
+        id:movies.lenght + 1,
+        title,
+        year,
+        genre,
+        rating,
+        poster: poster || ""
+    };
 
+    movies.push(newMovie)
 
-})
+    res.status(201).json({
+        message: "Movie created successfully",
+        movie: newMovie
+    });
+
+});
 
 
 

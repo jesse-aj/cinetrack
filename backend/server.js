@@ -69,7 +69,7 @@ app.post("/api/movies", async(req, res) => {
 
 
 app.put("/api/movies/:id", async(req, res) => {
-    const movieId = Number(req.params.id)
+   const movieId = Number(req.params.id)
    const movie = movies.find(movie => movie.id === movieId )
 
    if(!movie)
@@ -110,6 +110,26 @@ app.put("/api/movies/:id", async(req, res) => {
 })
 
 
+app.delete("/api/movies/:id", async(req, res) => {
+    // Get the movie ID from the URL and convert it from text to a number.
+    const movieId = Number(req.params.id);
+    // Find the array position of the movie with this ID.
+    const movieIndex = movies.findIndex(movie => movie.id === movieId);
+
+    // findIndex returns -1 when no movie has the requested ID.
+    if (movieIndex === -1) {
+        return res.status(404).json({ message: "Movie not found" });
+    }
+
+    // Remove one movie at that position and keep the removed movie.
+    const deletedMovie = movies.splice(movieIndex, 1)[0];
+
+    // Tell the client that the deletion succeeded and return the deleted movie.
+    res.json({
+        message: "Movie deleted successfully",
+        movie: deletedMovie
+    });
+});
 
 app.listen(5000, () => {
 	console.log("Server running on port 5000");

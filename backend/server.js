@@ -24,13 +24,13 @@ app.post("/api/movies", async(req, res) => {
     const {title, year, genre, rating, poster } = req.body
 
     if (!title || !year || !genre || rating === undefined){
-        return res.staus(400).json({
+        return res.status(400).json({
             message: "Title, year, genre and rating are required"
         });
     }
 
     if (typeof title !=="string" || typeof year !== "number") {
-        return res.json(400).json({
+        return res.status(400).json({
             message: "Title must be a text and year must be a number" 
         });
     }
@@ -42,12 +42,13 @@ app.post("/api/movies", async(req, res) => {
     }
 
     const newMovie = {
-        id:movies.lenght + 1,
+        id: movies.length + 1,
         title,
         year,
         genre,
         rating,
-        poster: poster || ""
+        poster: poster || "",
+        watched: false
     };
 
     movies.push(newMovie)
@@ -59,6 +60,47 @@ app.post("/api/movies", async(req, res) => {
 
 });
 
+
+app.put("/api/movies/:id", async(req, res) => {
+    const movieId = Number(req.params.id)
+   const movie = movies.find(movie => movie.id === movieId )
+
+   if(!movie)
+    return res.status(400).json({message: "Movie cannot be found"})
+
+    const { watched, rating } = req.body;
+
+    if (watched === undefined && rating === undefined) {
+        return res.status(400).json({
+            message: "Provide watched or rating to update"
+        });
+    }
+
+    if (watched !== undefined && typeof watched !== "boolean") {
+        return res.status(400).json({
+            message: "Watched must be true or false"
+        });
+    }
+
+    if (rating !== undefined && (typeof rating !== "number" || rating < 0 || rating > 10)) {
+        return res.status(400).json({
+            message: "Rating must be a number from 0 to 10"
+        });
+    }
+
+    if (watched !== undefined) {
+        movie.watched = watched;
+    }
+
+    if (rating !== undefined) {
+        movie.rating = rating;
+    }
+
+    res.json({
+        message: "Movie updated successfully",
+        movie
+    });
+})
 
 
 

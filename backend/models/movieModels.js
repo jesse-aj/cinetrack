@@ -5,7 +5,8 @@ const movies = [
 		year: 2014,
 		genre: ["Sci-Fi", "Drama"],
 		rating: 8.7,
-		poster: ""
+		poster: "",
+		watched: false
 	},
 	{
 		id: 2,
@@ -13,7 +14,8 @@ const movies = [
 		year: 2016,
 		genre: ["Animation", "Adventure"],
 		rating: 8.0,
-		poster: ""
+		poster: "",
+		watched: false
 	},
 	{
 		id: 3,
@@ -21,7 +23,8 @@ const movies = [
 		year: 2008,
 		genre: ["Action", "Drama"],
 		rating: 9.0,
-		poster: ""
+		poster: "",
+		watched: false
 	}
 ];
 

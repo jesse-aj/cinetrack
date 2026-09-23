@@ -14,6 +14,7 @@ const movieGrid = document.getElementById("movie-grid");   //Works on the movie 
 const modalDetails = document.getElementById("modal-movie-details") //Allows work on the modal pop up screen(Details)
 const movieModal = document.getElementById("movie-modal"); //Allows work on the actual modal pop up screen
 const closeModalBtn = document.getElementById("close-modal-btn"); //Allows us to add a close button to the modal when opened 
+const tonightQueue = [];
 
 movies.forEach(movie => {
     //create a fresh card div element 
@@ -34,6 +35,7 @@ card.innerHTML = `
     </div>
     <div class="card-rating">${movie.rating}/10</div>
     <div class="buttons">
+    <button class = "queue-btn">Add to Tonight</button>
     <button class="fav-btn"> Favorite </button>
     <button class="add-lib">Add to library</button>
     <button class="mark-watched">Mark watched</button>
@@ -44,6 +46,32 @@ card.innerHTML = `
     </div>
   `;
 
+//Tonoghts Queue section 
+const queueBtn = card.querySelector(".queue-btn");
+queueBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    const alreadyQueued = tonightQueue.some(
+        queuedMovie => queuedMovie.id === movie.id
+    );
+
+    if (!alreadyQueued) {
+        tonightQueue.push(movie);
+        renderTonightQueue();
+    }
+});
+
+// Rendering the queue
+function renderTonightQueue(){
+    const queueContainer = document.getElementById("tonights-queue");
+    queueContainer.innerHTML = tonightQueue.map(movie =>
+        `<div class = "queue-card">
+         <img class="queue-poster" src="${movie.poster}" alt="${movie.title} poster">
+         <h3>${movie.title}</h3>
+         <p>${movie.year} . ${movie.genre} </p>
+         </div>`
+    ).join("")
+}
 
 //Favorite button interaction
 const favBtn = card.querySelector(".fav-btn");

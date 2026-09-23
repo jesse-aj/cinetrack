@@ -37,6 +37,40 @@
 <!--JavaScript is inserted here (The cards)-->
 </div>
 
+<section>
+    <h2>Tonight</h2>
+<div id="tonights-queue" class="horizontal-container">
+
+</div>
+</section>
+
+<form action="/your-upload-endpoint" method="POST" enctype="multipart/form-data">
+  
+  <label>Title of Movie: </label>
+  <input type="text">
+  <br></br>
+  <label>Year of Movie: </label>
+  <input type="text">
+  <br></br>
+  <label>Genre of Movie: </label>
+  <select>
+    <option>SCiFi</option>
+    <option>Action</option>
+    <option>Anime</option>
+    <option>Drama</option>
+  </select>
+  <br></br>
+  <label for="poster-upload">Choose the movie poster to upload: </label>
+  <input type="file" name="poster">
+  <br></br>
+  <label for="video-upload">Choose the video to upload: </label>
+  <input type="file" name="videoFile">
+  <br></br>
+  <label>I agree that this movie was not stolen</label>
+  <input type="checkbox">
+  <br><br>
+  <button>Submit</button>
+</form>
 
 
 <script src="app.js"></script>

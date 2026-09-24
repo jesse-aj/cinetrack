@@ -164,17 +164,41 @@ function renderMovies(movies) {
             : "↩️";
     });
 
-    //Delete button 
-    const deleteBtn = card.querySelector(".delete-btn");
-    deleteBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        card.classList.add("removed");
-    });
+
+// Delete the movie from MongoDB
+const deleteBtn = card.querySelector(".delete-btn");
+
+deleteBtn.addEventListener("click", async (event) => {
+    event.stopPropagation();
+
+    const confirmed = confirm(`Delete "${movie.title}"?`);
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/api/movies/${movie._id}`, {
+            method: "DELETE"
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Could not delete movie");
+        }
+
+        // Reload cards from MongoDB after successful deletion
+        await loadMovies();
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+});
 
 
 
-
-    //Allows the modal to open when the card id clicked on 
+//Allows the modal to open when the card id clicked on 
     card.addEventListener("click", () => {
         const clickedId = card.dataset.id; //Turns the string to text
         const selectedMovie = movies.find(movie => movie._id === clickedId); //Allows to select each card based on the id(Finds the selected card by id)

@@ -44,32 +44,29 @@
 </div>
 </section>
 
-<form action="/your-upload-endpoint" method="POST" enctype="multipart/form-data">
-  
-  <label>Title of Movie: </label>
-  <input type="text">
-  <br></br>
-  <label>Year of Movie: </label>
-  <input type="text">
-  <br></br>
-  <label>Genre of Movie: </label>
-  <select>
-    <option>SCiFi</option>
-    <option>Action</option>
-    <option>Anime</option>
-    <option>Drama</option>
-  </select>
-  <br></br>
-  <label for="poster-upload">Choose the movie poster to upload: </label>
-  <input type="file" name="poster">
-  <br></br>
-  <label for="video-upload">Choose the video to upload: </label>
-  <input type="file" name="videoFile">
-  <br></br>
-  <label>I agree that this movie was not stolen</label>
-  <input type="checkbox">
-  <br><br>
-  <button>Submit</button>
+<form id="movie-form">
+    <label for="title">Title of movie:</label>
+    <input id="title" name="title" type="text" required>
+
+    <label for="year">Year of movie:</label>
+    <input id="year" name="year" type="number" required>
+
+    <label for="genre">Genres:</label>
+    <input
+        id="genre"
+        name="genre"
+        type="text"
+        placeholder="Sci-Fi, Drama"
+        required
+    >
+
+    <label for="rating">Rating:</label>
+    <input id="rating" name="rating" type="number" min="0" max="10" required>
+
+    <label for="poster">Poster URL:</label>
+    <input id="poster" name="poster" type="url">
+
+    <button type="submit">Add movie</button>
 </form>
 
 

@@ -153,3 +153,41 @@ closeModalBtn.addEventListener("click", () => {
     movieModal.classList.remove("open");
 });
     
+
+const movieForm = document.getElementById("movie-form");
+
+movieForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const movie = {
+        title: document.getElementById("title").value,
+        year: Number(document.getElementById("year").value),
+        genre: document
+            .getElementById("genre")
+            .value
+            .split(",")
+            .map(item => item.trim()),
+        rating: Number(document.getElementById("rating").value),
+        poster: document.getElementById("poster").value
+    };
+
+    const response = await fetch("http://localhost:5000/api/movies", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(movie)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        alert(result.message);
+        return;
+    }
+
+    alert("Movie added successfully");
+    movieForm.reset();
+    movieGrid.innerHTML = "";
+    loadMovies();
+});

@@ -105,15 +105,14 @@ try {
     }
 });
 
+//Updating the movie Endpoint 
+app.put("/api/movies/:id", async (req, res) => {
+    const { id } = req.params; //Takes the id 
+    const { watched, rating } = req.body;  // Takes the values for rating and watched from the body
 
-app.put("/api/movies/:id", async(req, res) => {
-   const movieId = Number(req.params.id)
-   const movie = movies.find(movie => movie.id === movieId )
-
-   if(!movie)
-    return res.status(400).json({message: "Movie cannot be found"})
-
-    const { watched, rating } = req.body;
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Invalid movie ID" });
+    }
 
     if (watched === undefined && rating === undefined) {
         return res.status(400).json({
@@ -127,48 +126,83 @@ app.put("/api/movies/:id", async(req, res) => {
         });
     }
 
-    if (rating !== undefined && (typeof rating !== "number" || rating < 0 || rating > 10)) {
+    if (
+        rating !== undefined &&
+        (typeof rating !== "number" || rating < 0 || rating > 10)
+    ) {
         return res.status(400).json({
             message: "Rating must be a number from 0 to 10"
         });
     }
 
-    if (watched !== undefined) {
-        movie.watched = watched;
+    const updates = {};
+
+    if (watched !== undefined) updates.watched = watched;
+    if (rating !== undefined) updates.rating = rating;
+
+    try {
+        const collection = getMoviesCollection();
+
+        const result = await collection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: updates }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({
+                message: "Movie not found"
+            });
+        }
+
+        const updatedMovie = await collection.findOne({
+            _id: new ObjectId(id)
+        });
+
+        res.json({
+            message: "Movie updated successfully",
+            movie: updatedMovie
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update movie"
+        });
     }
-
-    if (rating !== undefined) {
-        movie.rating = rating;
-    }
-
-    res.json({
-        message: "Movie updated successfully",
-        movie
-    });
-})
-
-
-app.delete("/api/movies/:id", async(req, res) => {
-    // Get the movie ID from the URL and convert it from text to a number.
-    const movieId = Number(req.params.id);
-    // Find the array position of the movie with this ID.
-    const movieIndex = movies.findIndex(movie => movie.id === movieId);
-
-    // findIndex returns -1 when no movie has the requested ID.
-    if (movieIndex === -1) {
-        return res.status(404).json({ message: "Movie not found" });
-    }
-
-    // Remove one movie at that position and keep the removed movie.
-    const deletedMovie = movies.splice(movieIndex, 1)[0];
-
-    // Tell the client that the deletion succeeded and return the deleted movie.
-    res.json({
-        message: "Movie deleted successfully",
-        movie: deletedMovie
-    });
 });
+ 
+//Deleting movie endpoint 
 
+app.delete("/api/movies/:id", async (req, res) => {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+            message: "Invalid movie ID"
+        });
+    }
+
+    try {
+        const collection = getMoviesCollection();
+
+        const deletedMovie = await collection.findOneAndDelete({
+            _id: new ObjectId(id)
+        });
+
+        if (!deletedMovie) {
+            return res.status(404).json({
+                message: "Movie not found"
+            });
+        }
+
+        res.json({
+            message: "Movie deleted successfully",
+            movie: deletedMovie
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to delete movie"
+        });
+    }
+});
 connectDB()
     .then(() => {
         app.listen(5000, () => {

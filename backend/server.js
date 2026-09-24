@@ -1,5 +1,5 @@
 const express = require("express");
-const movies = require("./models/movieModels");
+//Database Config 
 require("dotenv").config({
     path: require("path").join(__dirname, "../.env")
 });
@@ -21,7 +21,7 @@ app.get("/api/health", (req, res) => {
 app.get("/api/movies", async(req, res) => {
    try {
     const collections = getMoviesCollection();
-    const movies = await.collections.find({}).toArray();
+    const movies = await collections.find({}).toArray();
 
     res.json(movies);
    }catch (error) {
@@ -30,15 +30,20 @@ app.get("/api/movies", async(req, res) => {
 });
 
 app.get("/api/movies/:id", async(req, res) => {   
-    const movieId = Number(req.params.id);
-    const movie = movies.find(movie => 
-                         movie.id === movieId);
+try {
+    const collection = getMoviesCollection();
+    const movie = await collection.findOne({
+        _id: new ObjectId(req.params.id)
+    });
 
     if(!movie) {
         return res.status(404).json({message: "Movie not found"})
     }
     
     res.json(movie);
+} catch (error) {
+    res.status(400).json({ message: "Invalid movie ID"});
+}
 });
 
 
@@ -56,6 +61,13 @@ app.post("/api/movies", async(req, res) => {
             message: "Title must be a text and year must be a number" 
         });
     }
+
+    if (typeof title !== "string" || typeof year !== "number") {
+        return res.status(400).json({
+            message: "Title must be text and year must be a number"
+        });
+    }
+
 
     if (!Array.isArray(genre)) {
         return res.status(400).json({

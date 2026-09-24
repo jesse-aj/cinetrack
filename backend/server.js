@@ -1,5 +1,13 @@
 const express = require("express");
 const movies = require("./models/movieModels");
+require("dotenv").config({
+    path: require("path").join(__dirname, "../.env")
+});
+
+const { connectDB, getMoviesCollection } = require("./db");
+const { ObjectId } = require("mongodb");
+
+
 const app = express();
 app.use(express.json());
 
@@ -11,7 +19,14 @@ app.get("/api/health", (req, res) => {
 });
 
 app.get("/api/movies", async(req, res) => {
-	res.json(movies)
+   try {
+    const collections = getMoviesCollection();
+    const movies = await.collections.find({}).toArray();
+
+    res.json(movies);
+   }catch (error) {
+    res.status(500).json({message: "Failed to fetch movies"})
+   }
 });
 
 app.get("/api/movies/:id", async(req, res) => {   
@@ -131,6 +146,12 @@ app.delete("/api/movies/:id", async(req, res) => {
     });
 });
 
-app.listen(5000, () => {
-	console.log("Server running on port 5000");
-});
+connectDB()
+    .then(() => {
+        app.listen(5000, () => {
+            console.log("Server running on port 5000");
+        });
+    })
+    .catch(error => {
+        console.error("MongoDB connection failed:", error);
+    });

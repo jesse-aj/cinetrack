@@ -1,14 +1,9 @@
-const movies = [
-    {id: 1, title: "Interstellar", year: 2014, genre: "Sci-Fi", rating: "8.8", poster: "", watched: true},
-    {id: 2, title: "Moana", year: 2014, genre: "Sci-Fi", rating: "8.8", poster: "", watched: true},
-    {id: 3, title: "Jesse", year: 2032, genre: "Anime", rating: "8.8", poster: "", watched: false},
-    {id: 4, title: "Interstellar", year: 2014, genre: "Sci-Fi", rating: "8.8", poster: "", watched: true},
-    {id: 5, title: "Interstellar", year: 2014, genre: "Sci-Fi", rating: "8.8", poster: "", watched: false},
-    {id: 6, title: "Interstellar", year: 2014, genre: "Sci-Fi", rating: "8.8", poster: "", watched: true},
-    {id: 7, title: "Interstellar", year: 2014, genre: "Sci-Fi", rating: "8.8", poster: "", watched: true},
-    {id: 8, title: "Interstellar", year: 2014, genre: "Sci-Fi", rating: "8.8", poster: "", watched: false}
+fetch ("http://localhost:5000/api/movies")
+.then(response => response.json())
+.then(data => {
+    console.log(data)
+})
 
-]
 
 const movieGrid = document.getElementById("movie-grid");   //Works on the movie grid container using DOM
 const modalDetails = document.getElementById("modal-movie-details") //Allows work on the modal pop up screen(Details)

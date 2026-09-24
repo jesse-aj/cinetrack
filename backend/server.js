@@ -62,11 +62,6 @@ app.post("/api/movies", async(req, res) => {
         });
     }
 
-    if (typeof title !== "string" || typeof year !== "number") {
-        return res.status(400).json({
-            message: "Title must be text and year must be a number"
-        });
-    }
 
 
     if (!Array.isArray(genre)) {
@@ -75,23 +70,39 @@ app.post("/api/movies", async(req, res) => {
         });
     }
 
+     if (typeof rating !== "number" || rating < 0 || rating > 10) {
+        return res.status(400).json({
+            message: "Rating must be a number from 0 to 10"
+        });
+    }
+
+
     const newMovie = {
-        id: movies.length + 1,
         title,
         year,
         genre,
         rating,
         poster: poster || "",
-        watched: false
+        watched: false,
+        createdAt: new Date()
     };
 
-    movies.push(newMovie)
+try {
+        const collection = getMoviesCollection();
+        const result = await collection.insertOne(newMovie);
 
-    res.status(201).json({
-        message: "Movie created successfully",
-        movie: newMovie
-    });
-
+        res.status(201).json({
+            message: "Movie created successfully",
+            movie: {
+                ...newMovie,
+                _id: result.insertedId
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to create movie"
+        });
+    }
 });
 
 

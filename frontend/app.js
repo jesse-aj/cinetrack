@@ -1,3 +1,5 @@
+const API_URL = "http://localhost:5000";
+
 const movieGrid = document.getElementById("movie-grid");   //Works on the movie grid container using DOM
 const modalDetails = document.getElementById("modal-movie-details") //Allows work on the modal pop up screen(Details)
 const movieModal = document.getElementById("movie-modal"); //Allows work on the actual modal pop up screen
@@ -7,17 +9,26 @@ const tonightQueue = [];
 //Loads the movie for the frontend to use 
 async function loadMovies() {
     try {
-        const response = await fetch("http://localhost:5000/api/movies");
+        const response = await fetch(`${API_URL}/api/movies`);
 
-        if (!response.ok) { //If the response is not OK then ..
+        if (!response.ok) {    //If the response is not OK then ..
             throw new Error("Failed to load movies");
         }
 
         const movies = await response.json(); //Wait for response from the server 
 
+        // Remove old cards before rendering fresh database data
+        movieGrid.innerHTML = "";
+
+        if (movies.length === 0) {
+            movieGrid.textContent = "No movies found.";
+            return;
+        }
+
         renderMovies(movies);
     } catch (error) {
         console.error(error);
+        movieGrid.textContent = "Could not load movies.";
     }
 }
 
@@ -99,15 +110,49 @@ function renderMovies(movies) {
     :"✓📚";
     })
 
-    //Mark as watched button
+// Mark a movie as watched or unwatched in MongoDB
     const watchedbtn = card.querySelector(".mark-watched");
-    watchedbtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-    watchedbtn.classList.toggle("selected");
-    watchedbtn.textContent = watchedbtn.classList.contains("selected")
-            ? "✓"
-            : "↺";
-    });
+
+       // Show the current database state
+    watchedBtn.textContent = movie.watched ? "Unwatch" : "Mark watched";
+    watchedBtn.classList.toggle("selected", movie.watched);
+
+    watchedBtn.addEventListener("click", async (event) => {
+    event.stopPropagation();
+
+
+    // Reverse the current watched value
+    const newWatchedValue = !movie.watched;
+
+    try {
+        const response = await fetch(`${API_URL}/api/movies/${movie._id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                watched: newWatchedValue
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Could not update movie");
+        }
+
+        // Update the local movie after MongoDB succeeds
+        movie.watched = newWatchedValue;
+
+        watchedBtn.classList.toggle("selected", movie.watched);
+        watchedBtn.textContent = movie.watched
+            ? "↺ Unwatch"
+            : "✓ Mark watched";
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+});
 
     //Edit button 
     const editBtn = card.querySelector(".edit-btn");
@@ -171,7 +216,7 @@ movieForm.addEventListener("submit", async (event) => {
         poster: document.getElementById("poster").value
     };
 
-    const response = await fetch("http://localhost:5000/api/movies", {
+    const response = await fetch(`${API_URL}/api/movies`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

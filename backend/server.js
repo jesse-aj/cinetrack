@@ -1,4 +1,5 @@
 const express = require("express");
+const cors =  require("cors");
 //Database Config 
 require("dotenv").config({
     path: require("path").join(__dirname, "../.env")
@@ -9,6 +10,7 @@ const { ObjectId } = require("mongodb");
 
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {

@@ -8,7 +8,6 @@ require("dotenv").config({
 const { connectDB, getMoviesCollection } = require("./db");
 const { ObjectId } = require("mongodb");
 
-
 const app = express();
 app.use(cors());
 app.use(express.json());

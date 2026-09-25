@@ -4,7 +4,66 @@ const movieGrid = document.getElementById("movie-grid");   //Works on the movie 
 const modalDetails = document.getElementById("modal-movie-details") //Allows work on the modal pop up screen(Details)
 const movieModal = document.getElementById("movie-modal"); //Allows work on the actual modal pop up screen
 const closeModalBtn = document.getElementById("close-modal-btn"); //Allows us to add a close button to the modal when opened 
-const tonightQueue = [];
+
+//local Storage stores string so we  have to queue as JSON
+const QUEUE_KEY = "cinetrack_queue";
+
+// Load saved movie IDs when the page starts
+let queueIds = JSON.parse(
+    localStorage.getItem(QUEUE_KEY) || "[]"
+);
+
+// Save the current movie IDs to this browser
+function saveQueue() {
+    localStorage.setItem(QUEUE_KEY, JSON.stringify(queueIds));
+}
+
+
+// Render the queue using the latest movie data from the API
+function renderTonightQueue(movies) {
+    const queueContainer = document.getElementById("tonights-queue");
+
+    // Match saved localStorage IDs with movies returned by MongoDB
+    const queuedMovies = queueIds
+        .map(id => movies.find(movie => movie._id === id))
+        .filter(Boolean);
+
+    // Remove IDs whose movies no longer exist in MongoDB
+    queueIds = queuedMovies.map(movie => movie._id);
+    saveQueue();
+
+    if (queuedMovies.length === 0) {
+        queueContainer.innerHTML = "<p>Your queue is empty.</p>";
+        return;
+    }
+
+    queueContainer.innerHTML = queuedMovies.map(movie => `
+        <article class="queue-card" data-id="${movie._id}">
+            <h3>${movie.title}</h3>
+            <p>${movie.year} · ${movie.genre.join(", ")}</p>
+            <button class="remove-queue-btn">
+                Remove
+            </button>
+        </article>
+    `).join("");
+
+    // Remove a movie immediately from localStorage and the panel
+    queueContainer
+        .querySelectorAll(".remove-queue-btn")
+        .forEach(button => {
+            button.addEventListener("click", () => {
+                const queueCard = button.closest(".queue-card");
+                const movieId = queueCard.dataset.id;
+
+                queueIds = queueIds.filter(id => id !== movieId);
+                saveQueue();
+
+                // Re-render immediately without refreshing the page
+                renderTonightQueue(movies);
+            });
+        });
+}
+
 
 //Loads the movie for the frontend to use 
 async function loadMovies() {
@@ -25,7 +84,11 @@ async function loadMovies() {
             return;
         }
 
+
         renderMovies(movies);
+        // Render the queue using the latest movie data from the API
+        renderTonightQueue(movies);
+
     } catch (error) {
         console.error(error);
         movieGrid.textContent = "Could not load movies.";
@@ -65,32 +128,37 @@ function renderMovies(movies) {
         </div>
     `;
 
-    //Tonoghts Queue section 
-    const queueBtn = card.querySelector(".queue-btn");
-    queueBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
+// Add or remove this movie's ID from the browser queue
+const queueBtn = card.querySelector(".queue-btn");
 
-        const alreadyQueued = tonightQueue.some(
-            queuedMovie => queuedMovie._id === movie._id
-        );
+const isQueued = queueIds.includes(movie._id);
 
-        if (!alreadyQueued) {
-            tonightQueue.push(movie);
-            renderTonightQueue();
-        }
-    });
+queueBtn.textContent = isQueued
+    ? "Remove from Tonight"
+    : "Add to Tonight";
 
-    // Rendering the queue
-    function renderTonightQueue(){
-        const queueContainer = document.getElementById("tonights-queue");
-        queueContainer.innerHTML = tonightQueue.map(movie =>
-            `<div class = "queue-card">
-            <img class="queue-poster" src="${movie.poster}" alt="${movie.title} poster">
-            <h3>${movie.title}</h3>
-            <p>${movie.year} . ${movie.genre} </p>
-            </div>`
-        ).join("")
+queueBtn.addEventListener("click", event => {
+    event.stopPropagation();
+
+    if (queueIds.includes(movie._id)) {
+        // Remove the movie ID from the queue
+        queueIds = queueIds.filter(id => id !== movie._id);
+    } else {
+        // Store only the MongoDB ID, not the whole movie object
+        queueIds.push(movie._id);
     }
+
+    // Persist the changed IDs in this browser
+    saveQueue();
+
+    // Update this button
+    queueBtn.textContent = queueIds.includes(movie._id)
+        ? "Remove from Tonight"
+        : "Add to Tonight";
+
+    // Update the queue panel
+    renderTonightQueue(movies);
+});
 
     //Favorite button interaction
     const favBtn = card.querySelector(".fav-btn");
@@ -188,6 +256,10 @@ deleteBtn.addEventListener("click", async (event) => {
         if (!response.ok) {
             throw new Error(result.message || "Could not delete movie");
         }
+
+        // Also remove the deleted movie from the local queue
+        queueIds = queueIds.filter(id => id !== movie._id);
+        saveQueue();
 
         // Reload cards from MongoDB after successful deletion
         await loadMovies();

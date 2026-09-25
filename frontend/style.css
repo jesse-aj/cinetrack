@@ -52,6 +52,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 
@@ -62,14 +63,13 @@
 }
 
 .card-content {
-  padding:16px;
-  font-family: sans-serif;
+    min-width: 0;
+    padding: 16px;
+    font-family: sans-serif;
 }
 
 .card-title {
-  margin: 0 0 8px 0;
-  font-size: 1.3rem;
-  color: #333;
+  overflow-wrap: anywhere;
 }
 
 .card-meta {
@@ -86,18 +86,54 @@
 }
 
 .buttons{
-  display: flex;
-  gap: 12px; 
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px; 
+  margin-top: 12px;
 }
 
 .buttons button {
-  flex: 1 1 45%;
-  min-height: 34px;
-  padding: 7px 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.85rem;
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: 8px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background: #202020;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+  
+}
+
+/* Simple dark-and-red accent design */
+.buttons button:hover {
+    background: #333333;
+  
+}
+
+/* Watched button state */
+.buttons .mark-watched.selected {
+    background: #e50914;
+    border-color: #e50914;
+}
+
+/* Delete button */
+.buttons .delete-btn {
+    background: #444444;
+}
+
+.buttons .delete-btn:hover {
+    background: #e50914;
+    border-color: #e50914;
+}
+
+/* On narrow cards, stack buttons instead of forcing overflow */
+@media (max-width: 300px) {
+    .buttons {
+        grid-template-columns: 1fr;
+    }
 }
 
 .fav-btn {
@@ -122,10 +158,6 @@
   color: #176b2c;
 }
 
-.mark-watched.selected {
-  background: #8ed1fc;
-  color: #064b73;
-}
 
 .edit-btn.selected {
   background: #ffe08a;

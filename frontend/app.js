@@ -106,15 +106,16 @@ function renderMovies(movies) {
         e.stopPropagation();
     addlib.classList.toggle("selected");
     addlib.textContent = addlib.classList.contains("selected")
-    ?"＋📚"
-    :"✓📚";
+    ?"＋"
+    :"✓";
     })
 
 // Mark a movie as watched or unwatched in MongoDB
-    const watchedbtn = card.querySelector(".mark-watched");
+    const watchedBtn = card.querySelector(".mark-watched");
 
        // Show the current database state
-    watchedBtn.textContent = movie.watched ? "Unwatch" : "Mark watched";
+    watchedBtn.textContent = movie.watched 
+                             ? "Unwatch" : "Mark watched";
     watchedBtn.classList.toggle("selected", movie.watched);
 
     watchedBtn.addEventListener("click", async (event) => {
@@ -146,8 +147,8 @@ function renderMovies(movies) {
 
         watchedBtn.classList.toggle("selected", movie.watched);
         watchedBtn.textContent = movie.watched
-            ? "↺ Unwatch"
-            : "✓ Mark watched";
+            ? "Unwatch"
+            : "Mark watched";
     } catch (error) {
         console.error(error);
         alert(error.message);
@@ -160,8 +161,8 @@ function renderMovies(movies) {
         e.stopPropagation();
     editBtn.classList.toggle("selected");
     editBtn.textContent = editBtn.classList.contains("selected")
-            ? "✏️"
-            : "↩️";
+            ? "Edit"
+            : "Undo Edit";
     });
 
 

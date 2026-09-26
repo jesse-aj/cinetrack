@@ -4,12 +4,16 @@ const cors =  require("cors");
 require("dotenv").config({
     path: require("path").join(__dirname, "../.env")
 });
+const allowedOrigin =
+    process.env.FRONTEND_URL ||  "https://cinetrack-yx2y.onrender.com"
 
 const { connectDB, getMoviesCollection } = require("./db");
 const { ObjectId } = require("mongodb");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: allowedOrigin
+}));
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {

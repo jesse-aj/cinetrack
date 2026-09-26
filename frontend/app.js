@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "https://cinetrack-yx2y.onrender.com";
 
 const movieGrid = document.getElementById("movie-grid");   //Works on the movie grid container using DOM
 const modalDetails = document.getElementById("modal-movie-details") //Allows work on the modal pop up screen(Details)

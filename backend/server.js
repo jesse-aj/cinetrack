@@ -4,16 +4,26 @@ const cors =  require("cors");
 require("dotenv").config({
     path: require("path").join(__dirname, "../.env")
 });
-const allowedOrigin =
-    process.env.FRONTEND_URL ||  "https://cinetrack-yx2y.onrender.com"
+const allowedOrigin =[
+    process.env.FRONTEND_URL ||  "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "https://cinetrack-orpin.vercel.app"
+]
 
 const { connectDB, getMoviesCollection } = require("./db");
 const { ObjectId } = require("mongodb");
 
 const app = express();
 app.use(cors({
-    origin: allowedOrigin
+     origin: function (origin, callback) {
+        if (!origin || allowedOrigin.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    }
 }));
+
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {

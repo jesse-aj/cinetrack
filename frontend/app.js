@@ -33,12 +33,13 @@ function renderTonightQueue(movies) {
     saveQueue();
 
     if (queuedMovies.length === 0) {
-        queueContainer.innerHTML = "<p>Your queue is empty.</p>";
+        queueContainer.innerHTML = "<p>No added Queue Movies.</p>";
         return;
     }
 
     queueContainer.innerHTML = queuedMovies.map(movie => `
         <article class="queue-card" data-id="${movie._id}">
+            <img src="${movie.poster}" alt="${movie.title} Poster" class="card-poster">
             <h3>${movie.title}</h3>
             <p>${movie.year} · ${movie.genre.join(", ")}</p>
             <button class="remove-queue-btn">
@@ -165,7 +166,7 @@ queueBtn.addEventListener("click", event => {
     favBtn.addEventListener("click", (e) => { 
         e.stopPropagation(); // Prevents clicking the button from accidentally opening the modal screen
         favBtn.classList.toggle("active");
-        favBtn.textContent = favBtn.classList.contains("active") ? "♡ " : "🤍";
+        favBtn.textContent = favBtn.classList.contains("active") ? "Favourite" : "UnFavourite";
     });
 
     //Add library button 
@@ -174,8 +175,8 @@ queueBtn.addEventListener("click", event => {
         e.stopPropagation();
     addlib.classList.toggle("selected");
     addlib.textContent = addlib.classList.contains("selected")
-    ?"＋"
-    :"✓";
+    ?"Add to Library"
+    :"UnAdd from Library";
     })
 
 // Mark a movie as watched or unwatched in MongoDB

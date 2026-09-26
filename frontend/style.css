@@ -45,7 +45,7 @@
 
 
 .card {
-    background-color: rgb(204, 192, 132);
+    background-color: bisque;
     border: 1px solid;
     border-radius: 25px ;
     overflow: hidden;
@@ -160,7 +160,7 @@
 
 
 .edit-btn.selected {
-  background: #ffe08a;
+  background: #151514;
 }
 
 .card.removed {

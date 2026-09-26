@@ -10,7 +10,7 @@ const movies = [
         year: 2024,
         genre: ["Sci-Fi", "Adventure"],
         rating: 9,
-        poster: "",
+        poster: "images/Dune.png",
         watched: false,
         createdAt: new Date()
     },
@@ -21,7 +21,7 @@ const movies = [
         year: 1994,
         genre: ["Drama"],
         rating: 9,
-        poster: "",
+        poster: "images/Shaw",
         watched: true,
         createdAt: new Date()
     },
@@ -30,7 +30,7 @@ const movies = [
         year: 1972,
         genre: ["Crime", "Drama"],
         rating: 10,
-        poster: "",
+        poster: "images/",
         watched: false,
         createdAt: new Date()
     },
@@ -39,7 +39,7 @@ const movies = [
         year: 2019,
         genre: ["Thriller", "Drama"],
         rating: 9,
-        poster: "",
+        poster: "images/Parasite.png",
         watched: false,
         createdAt: new Date()
     },
@@ -48,7 +48,7 @@ const movies = [
         year: 1999,
         genre: ["Action", "Sci-Fi"],
         rating: 9,
-        poster: "",
+        poster: "images/Matrix.png",
         watched: true,
         createdAt: new Date()
     },
@@ -57,7 +57,7 @@ const movies = [
         year: 2001,
         genre: ["Animation", "Fantasy"],
         rating: 9,
-        poster: "",
+        poster: "images/Spirited_Away.png",
         watched: false,
         createdAt: new Date()
     },
@@ -66,16 +66,16 @@ const movies = [
         year: 2001,
         genre: ["Fantasy", "Adventure"],
         rating: 9,
-        poster: "",
+        poster: "images/Lord_of_The_Rings.png",
         watched: true,
         createdAt: new Date()
     },
     {
-        title: "Everything Everywhere All at Once",
+        title: "Everywhere All at Once",
         year: 2022,
         genre: ["Action", "Comedy", "Sci-Fi"],
         rating: 8,
-        poster: "",
+        poster: "images/Everything.png",
         watched: false,
         createdAt: new Date()
     },
@@ -84,7 +84,7 @@ const movies = [
         year: 2014,
         genre: ["Drama", "Music"],
         rating: 9,
-        poster: "",
+        poster: "images/WhipSplash.png",
         watched: false,
         createdAt: new Date()
     },
@@ -93,7 +93,7 @@ const movies = [
         year: 2015,
         genre: ["Action", "Adventure"],
         rating: 9,
-        poster: "",
+        poster: "images/MadMax.png",
         watched: true,
         createdAt: new Date()
     },
@@ -102,7 +102,7 @@ const movies = [
         year: 2016,
         genre: ["Sci-Fi", "Drama"],
         rating: 8,
-        poster: "",
+        poster: "images/Arrival.png",
         watched: false,
         createdAt: new Date()
     },
@@ -111,7 +111,7 @@ const movies = [
         year: 2014,
         genre: ["Comedy", "Drama"],
         rating: 8,
-        poster: "",
+        poster: "images/GrandBudaPest.png",
         watched: false,
         createdAt: new Date()
     },
@@ -120,7 +120,7 @@ const movies = [
         year: 2018,
         genre: ["Animation", "Action"],
         rating: 9,
-        poster: "",
+        poster: "images/Spiderman.png",
         watched: true,
         createdAt: new Date()
     },
@@ -129,7 +129,7 @@ const movies = [
         year: 2010,
         genre: ["Sci-Fi", "Thriller"],
         rating: 9,
-        poster: "",
+        poster: "images/Inception.png",
         watched: true,
         createdAt: new Date()
     },
@@ -138,7 +138,7 @@ const movies = [
         year: 2008,
         genre: ["Action", "Crime"],
         rating: 10,
-        poster: "",
+        poster: "images/Dark_Night.png",
         watched: true,
         createdAt: new Date()
     }

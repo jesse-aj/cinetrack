@@ -26,15 +26,6 @@ const movies = [
         createdAt: new Date()
     },
     {
-        title: "The Godfather",
-        year: 1972,
-        genre: ["Crime", "Drama"],
-        rating: 10,
-        poster: "images/",
-        watched: false,
-        createdAt: new Date()
-    },
-    {
         title: "Parasite",
         year: 2019,
         genre: ["Thriller", "Drama"],
